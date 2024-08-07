@@ -2,46 +2,39 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-
+use App\Enums\RoleEnum;
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
-
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
-
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
+    protected $fillable = ['first_name', 'last_name', 'dob', 'address', 'phone', 'email', 'password', 'role', 'membership_level'];
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            'role' => RoleEnum::class,
         ];
+    }
+    public function borrowTransactions()
+    {
+        return $this->hasMany(BorrowTransaction::class);
+    }
+
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class);
+    }
+
+    public function recommendations()
+    {
+        return $this->hasMany(Recommendation::class);
+    }
+
+    public function penalties()
+    {
+        return $this->hasMany(Penalty::class);
+    }
+
+    public function membership()
+    {
+        return $this->hasOne(Membership::class);
     }
 }
