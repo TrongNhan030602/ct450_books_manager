@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -20,5 +21,14 @@ class Book extends Model
     public function recommendations()
     {
         return $this->hasMany(Recommendation::class);
+    }
+    public function wishlists()
+    {
+        return $this->hasMany(Wishlist::class);
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
     }
 }

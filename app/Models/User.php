@@ -2,17 +2,18 @@
 
 namespace App\Models;
 
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Enums\RoleEnum;
+use App\Enums\MembershipLevelEnum;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+
 class User extends Authenticatable
 {
     protected $fillable = ['first_name', 'last_name', 'dob', 'address', 'phone', 'email', 'password', 'role', 'membership_level'];
-    protected function casts(): array
-    {
-        return [
-            'role' => RoleEnum::class,
-        ];
-    }
+    protected $casts = [
+        'role' => RoleEnum::class,
+        'membership_level' => MembershipLevelEnum::class,
+    ];
+
     public function borrowTransactions()
     {
         return $this->hasMany(BorrowTransaction::class);
@@ -37,4 +38,14 @@ class User extends Authenticatable
     {
         return $this->hasOne(Membership::class);
     }
+    public function wishlists()
+    {
+        return $this->hasMany(Wishlist::class);
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
 }
